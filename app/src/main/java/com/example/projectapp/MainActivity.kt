@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity() {
         val emailEdit: EditText = findViewById(R.id.registerName)
         val passwordEdit: EditText = findViewById(R.id.registerPass)
         val registerButton: Button = findViewById(R.id.registerButton)
+        val movetoLogin: TextView = findViewById(R.id.loginTextView)
+
+
 
 
         registerButton.setOnClickListener {
@@ -69,6 +73,11 @@ class MainActivity : AppCompatActivity() {
                 }
 
         }
+        movetoLogin.setOnClickListener{
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
     }
 
@@ -95,5 +104,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 }
 

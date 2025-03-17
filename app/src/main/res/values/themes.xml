@@ -2,8 +2,14 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.ProjectApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="android:colorSecondary">#0B9205</item>
-        <item name="android:colorBackground">#D3D3D3</item>
+
+    </style>
+    <style name="newButton" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:backgroundTint">#0B9205</item>
+        <item name="android:radius">30dp</item>
+    </style>
+    <style name="textstyle" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:colorPrimary">#727070</item>
     </style>
 
     <style name="Theme.ProjectApp" parent="Base.Theme.ProjectApp" />
