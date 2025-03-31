@@ -1,12 +1,16 @@
 package com.example.projectapp
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -14,6 +18,7 @@ import com.google.firebase.ktx.Firebase
 import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var loadingdialog: Dialog
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +33,9 @@ class MainActivity : AppCompatActivity() {
         val passwordEdit: EditText = findViewById(R.id.registerPass)
         val registerButton: Button = findViewById(R.id.registerButton)
         val movetoLogin: TextView = findViewById(R.id.loginTextView)
+        loadingdialog = createLoadingDialog(this)
+
+
 
 
 
@@ -54,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                             .set(newUser)
                             .addOnSuccessListener {
                                 Log.d("TAG", "DocumentSnapshot successfully written!")
+                                loadingdialog.show()
                                 val intent = Intent(this, HomeActivity::class.java)
                                 startActivity(intent)
                                 finish()
@@ -74,6 +83,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         movetoLogin.setOnClickListener{
+            loadingdialog.show()
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
@@ -90,6 +100,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(
                 baseContext,
                 "Niezalogowany",
+
                 Toast.LENGTH_SHORT,
             ).show()
         }
@@ -103,6 +114,17 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(baseContext, HomeActivity::class.java)
             startActivity(intent)
         }
+    }
+    private fun createLoadingDialog(context: Context): Dialog{
+        val builder = AlertDialog.Builder(context)
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.loadingdialog, null)
+        builder.setView(dialogView)
+        builder.setCancelable(false)
+
+        val dialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        return dialog
     }
 
 }
