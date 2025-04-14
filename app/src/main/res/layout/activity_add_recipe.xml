@@ -11,61 +11,71 @@
         android:id="@+id/nameEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="220dp"
         android:ems="10"
         android:hint="Name of Recipe"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="250dp"
-        android:layout_height="73dp"
-        android:layout_marginTop="88dp"
-        app:layout_constraintEnd_toEndOf="@+id/IngredientEditText"
-        app:layout_constraintHorizontal_bias="0.286"
-        app:layout_constraintStart_toStartOf="@+id/IngredientEditText"
-        app:layout_constraintTop_toBottomOf="@+id/IngredientEditText" />
 
     <EditText
         android:id="@+id/IngredientEditText"
         android:layout_width="121dp"
         android:layout_height="77dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
         android:hint="Ingredient"
         android:inputType="text"
         app:layout_constraintStart_toStartOf="@+id/nameEditText"
         app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/newButton"
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:text="Add Recipe"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="250dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="@+id/IngredientEditText"
+        app:layout_constraintHorizontal_bias="0.24"
+        app:layout_constraintStart_toStartOf="@+id/IngredientEditText"
+        app:layout_constraintTop_toBottomOf="@+id/IngredientEditText" />
 
     <EditText
         android:id="@+id/recipeEditText"
         android:layout_width="277dp"
         android:layout_height="67dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="Recipe"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="@+id/listView"
-        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintHorizontal_bias="0.592"
         app:layout_constraintStart_toStartOf="@+id/listView"
         app:layout_constraintTop_toBottomOf="@+id/listView" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addIngredientButton"
+        style="@style/newButton"
+        android:layout_width="69dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="48dp"
+        android:text="+"
+        app:layout_constraintEnd_toEndOf="@+id/nameEditText"
+        app:layout_constraintStart_toEndOf="@+id/IngredientEditText"
+        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button2"
+        style="@style/newButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Add Recipe"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -75,16 +85,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/newButton"
-        android:id="@+id/addIngredientButton"
-        android:layout_width="69dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="72dp"
-        android:text="+"
-        app:layout_constraintEnd_toEndOf="@+id/nameEditText"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/IngredientEditText"
-        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
+    <ImageView
+        android:id="@+id/recipeImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

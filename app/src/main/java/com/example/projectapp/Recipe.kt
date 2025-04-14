@@ -1,4 +1,6 @@
 package com.example.projectapp
 
-data class Recipe(val title: String)
+import android.widget.ImageView
+
+data class Recipe(val name: String, val picture: String)
 
