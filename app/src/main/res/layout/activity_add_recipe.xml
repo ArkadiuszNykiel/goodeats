@@ -42,12 +42,13 @@
         app:layout_constraintStart_toStartOf="@+id/nameEditText"
         app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/newButton"
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
-        android:text="Button"
+        android:text="Add Recipe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -74,7 +75,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/newButton"
         android:id="@+id/addIngredientButton"
         android:layout_width="69dp"
         android:layout_height="50dp"

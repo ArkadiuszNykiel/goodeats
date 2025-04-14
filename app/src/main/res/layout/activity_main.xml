@@ -56,24 +56,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
 
-    <EditText
-        android:id="@+id/registerPass"
-        android:layout_width="215dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="112dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerName" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/registerButton"
         style="@style/newButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="60dp"
         android:text="Register"
         android:textColorLink="#0B9205"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,8 +79,8 @@
         app:layout_constraintTop_toTopOf="@+id/welcomeText2" />
 
     <TextView
-        style="@style/textstyle"
         android:id="@+id/loginTextView"
+        style="@style/textstyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -101,5 +89,17 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/registerButton" />
+
+    <EditText
+        android:id="@+id/registerPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
