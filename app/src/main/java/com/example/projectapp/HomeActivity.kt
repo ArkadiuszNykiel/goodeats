@@ -45,6 +45,14 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+        val recipes = mutableListOf(
+            Recipe("recipe 1"),
+            Recipe("recipe 1"),
+            Recipe("recipe 1"),
+            Recipe("recipe 1"),
+            Recipe("recipe 1")
+
+        )
 
 
     }
