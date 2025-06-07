@@ -107,7 +107,7 @@ class AddRecipeActivity : AppCompatActivity() {
                             )
                             db.collection("recipes")
                                 .add(recipe)
-                                .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully written!") }
+                                .addOnSuccessListener { documentReference -> Log.d("TAG", "DocumentSnapshot written with ID: ${documentReference.id}") }
                                 .addOnFailureListener { e -> Log.w("TAG", "Error writing document", e) }
                         }
                     }

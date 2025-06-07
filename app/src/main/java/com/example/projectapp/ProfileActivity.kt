@@ -1,57 +1,69 @@
-package com.example.projectapp
-
+import android.app.Activity
 import android.app.Dialog
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract.Profile
+import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.projectapp.MainActivity
+import com.example.projectapp.R
+import com.example.projectapp.Recipe
+import com.example.projectapp.RecipeAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import java.util.UUID
 
-class HomeActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
     private val recipes = mutableListOf<Recipe>()
     val recipesAdapter = RecipeAdapter(recipes)
-    val db = Firebase.firestore
+    private var imageURL: String = ""
+    private lateinit var imageUri2: Uri
+    private var imagePicked = false
     private lateinit var auth: FirebaseAuth
-    private lateinit var loadingdialog: Dialog
+
+    private lateinit var storage: FirebaseStorage
+    private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if(it.resultCode == Activity.RESULT_OK)
+        {
+            val data: Intent? = it.data
+            val imageUri = data?.data
+            imageUri2 = imageUri!!
+            imageView.setImageURI(imageUri)
+            imagePicked = true
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_home)
-
+        setContentView(R.layout.activity_profile)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
         auth = Firebase.auth
         val currentUser = auth.currentUser
-        val addRecipeButton: Button = findViewById(R.id.addRecipeButton)
-        val profileButton: Button = findViewById(R.id.profileButton)
-        loadingdialog = createLoadingDialog(this)
+        val db = Firebase.firestore
+        val signOutButton: Button = findViewById(R.id.signOutButton)
 
-        val recipeRecyclerView: RecyclerView = findViewById(R.id.recipeRecyclerView)
+        val recipeRecyclerView: RecyclerView = findViewById(R.id.favRecyclerView)
         recipeRecyclerView.adapter = recipesAdapter
         recipeRecyclerView.layoutManager = LinearLayoutManager(this)
-
 
 
         fun fetchRecipes(name: String) {
@@ -64,7 +76,7 @@ class HomeActivity : AppCompatActivity() {
 
                             document.data["name"].toString(),
                             document.data["image"].toString()
-                            ))
+                        ))
 
                     }
                     recipesAdapter.notifyDataSetChanged()
@@ -75,39 +87,13 @@ class HomeActivity : AppCompatActivity() {
         }
         fetchRecipes("")
 
-
-
-
-
-
-        addRecipeButton.setOnClickListener {
-            val intent = Intent(this, AddRecipeActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-        profileButton.setOnClickListener{
-            val intent = Intent(this, ProfileActivity::class.java)
+        signOutButton.setOnClickListener {
+            auth.signOut()
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
 
 
-
-
     }
-
-    private fun createLoadingDialog(context: Context): Dialog {
-        val builder = AlertDialog.Builder(context)
-        val inflater = LayoutInflater.from(context)
-        val dialogView = inflater.inflate(R.layout.loadingdialog, null)
-        builder.setView(dialogView)
-        builder.setCancelable(false)
-
-        val dialog = builder.create()
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        return dialog
-
-
-    }
-
 }
