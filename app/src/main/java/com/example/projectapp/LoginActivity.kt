@@ -46,6 +46,14 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
         loginButton.setOnClickListener {
+            if(usernameText.text.isEmpty() || loginPass.text.isEmpty()){
+                Toast.makeText(
+                    baseContext,
+                    "Fields cannot be empty",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                return@setOnClickListener
+            }
             auth.signInWithEmailAndPassword(usernameText.text.toString(), loginPass.text.toString())
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
