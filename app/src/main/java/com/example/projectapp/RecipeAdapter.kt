@@ -56,35 +56,6 @@ class RecipeAdapter(var recipes: MutableList<Recipe>) : RecyclerView.Adapter<Rec
             }
         textView1.text = recipes[position].name
         Picasso.get().load(recipes[position].picture).into(imageView1)
-//        likeButton.setOnClickListener {
-//
-//            if(!doesExist) {
-//                val follow = hashMapOf(
-//                    "uid" to auth.currentUser!!.uid,
-//                    "pid" to recipes[position].id
-//                )
-//
-//                db.collection("follows").document(auth.currentUser!!.uid+":"+recipes[position].id)
-//                    .set(follow)
-//                    .addOnSuccessListener { documentReference ->
-//                        Log.d("TAG", "DocumentSnapshot written with ID:")
-//                        doesExist = true
-//                    }
-//                    .addOnFailureListener { e ->
-//                        Log.w("TAG", "Error adding document", e)
-//                    }
-//            }
-//            else {
-//                db.collection("follows").document(auth.currentUser!!.uid+":"+recipes[position].id)
-//                    .delete()
-//                    .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully deleted!")
-//
-//                        doesExist = false
-//                    }
-//                    .addOnFailureListener { e -> Log.w("TAG", "Error deleting document", e) }
-//            }
-//
-//        }
 
 
 

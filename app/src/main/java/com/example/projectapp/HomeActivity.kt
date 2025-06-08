@@ -47,21 +47,31 @@ class HomeActivity : AppCompatActivity() {
         val recipeRecyclerView: RecyclerView = findViewById(R.id.recipeRecyclerView)
         recipeRecyclerView.adapter = recipesAdapter
         recipeRecyclerView.layoutManager = LinearLayoutManager(this)
+        val searchButton: Button = findViewById(R.id.searchButton)
+        val searchEditText: android.widget.EditText = findViewById(R.id.searchEditText)
+        recipes.clear()
 
 
 
         fun fetchRecipes(name: String) {
-            db.collection("recipes").whereGreaterThanOrEqualTo("name", name)
+            val end = name + "\uf8ff" // Unicode character that is last in sort order
+
+            db.collection("recipes")
+                .orderBy("name")
+                .startAt(name)
+                .endAt(end)
                 .get()
                 .addOnSuccessListener { result ->
+                    recipes.clear() // clear previous results before adding new ones
                     for (document in result) {
                         Log.d(TAG, "${document.id} => ${document.data}")
-                        recipes.add(Recipe( document.id,
-
-                            document.data["name"].toString(),
-                            document.data["image"].toString()
-                            ))
-
+                        recipes.add(
+                            Recipe(
+                                document.id,
+                                document.data["name"].toString(),
+                                document.data["image"].toString()
+                            )
+                        )
                     }
                     recipesAdapter.notifyDataSetChanged()
                 }
@@ -71,24 +81,19 @@ class HomeActivity : AppCompatActivity() {
         }
         fetchRecipes("")
 
-//        signOutButton.setOnClickListener {
-//            auth.signOut()
-//            val intent = Intent(this, MainActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//        }
-
-
-
-
-
-
-
-
-
+        searchButton.setOnClickListener {
+            val searchText = searchEditText.text.toString()
+            recipes.clear()
+            fetchRecipes(searchText)
+            searchEditText.text.clear()
+        }
 
 
     }
+
+
+
+
 
     private fun createLoadingDialog(context: Context): Dialog {
         val builder = AlertDialog.Builder(context)
@@ -100,7 +105,6 @@ class HomeActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         return dialog
-
 
     }
 

@@ -1,8 +1,10 @@
 package com.example.projectapp
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageView
@@ -96,9 +98,38 @@ class SingleRecipeActivity : AppCompatActivity() {
         val commentRecyclerView = findViewById<RecyclerView>(R.id.commentRecyclerView)
         commentRecyclerView.adapter = adapter
         commentRecyclerView.layoutManager = LinearLayoutManager(this)
+        val deleteButton: ImageView = findViewById(R.id.deleteButton)
+
+
 
 
         val docRef = db.collection("recipes").document(recipeId.toString())
+
+        docRef.get().addOnSuccessListener { document ->
+            if (document != null && document.exists()) {
+                val createdBy = document.getString("userid")
+                val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+                if (createdBy == currentUserId) {
+                    deleteButton.visibility = View.VISIBLE
+                    deleteButton.setOnClickListener {
+                        docRef.delete()
+                            .addOnSuccessListener {
+                                Log.d(TAG, "Recipe deleted successfully")
+                                finish() // Optional: close activity
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w(TAG, "Error deleting recipe", e)
+                            }
+                    }
+                } else {
+                    deleteButton.visibility = View.GONE
+                }
+            }
+        }
+
+
+
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
@@ -127,7 +158,6 @@ class SingleRecipeActivity : AppCompatActivity() {
                 }
             }
 
-// Step 2: Increment like count when button is clicked
         likeButton.setOnClickListener {
             val currentUser = FirebaseAuth.getInstance().currentUser
             if (currentUser == null) {
@@ -146,11 +176,11 @@ class SingleRecipeActivity : AppCompatActivity() {
                 val isLiked = likedUsers.contains(userId)
 
                 if (isLiked) {
-                    // Unlike
+
                     newLikes = (currentLikes - 1).coerceAtLeast(0)
                     newLikedUsers = likedUsers - userId
                 } else {
-                    // Like
+
                     newLikes = currentLikes + 1
                     newLikedUsers = likedUsers + userId
                 }
@@ -240,6 +270,35 @@ class SingleRecipeActivity : AppCompatActivity() {
 
 
         }
+        fun deleteRecipeIfOwner(recipeId: String) {
+            val currentUser = FirebaseAuth.getInstance().currentUser ?: return
+            val docRef = db.collection("recipes").document(recipeId)
+
+            docRef.get().addOnSuccessListener { document ->
+                val createdBy = document.getString("userid")
+                if (createdBy == currentUser.uid) {
+                    docRef.delete()
+                        .addOnSuccessListener {
+                            Log.d(TAG, "Recipe deleted successfully")
+
+                        }
+
+                        .addOnFailureListener { e ->
+                            Log.w(TAG, "Error deleting recipe", e)
+                        }
+                } else {
+                    Log.w(TAG, "User not authorized to delete this recipe")
+                }
+            }
+        }
+        deleteButton.setOnClickListener{
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+            deleteRecipeIfOwner(recipeId.toString())
+        }
+
     }
 
 

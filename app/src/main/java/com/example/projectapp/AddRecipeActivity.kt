@@ -104,6 +104,10 @@ class AddRecipeActivity : AppCompatActivity() {
 //                                "likes" to 0
 
                             )
+                            val intent = Intent(this, HomeActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                            finish()
                             db.collection("recipes")
                                 .add(recipe)
                                 .addOnSuccessListener { documentReference -> Log.d("TAG", "DocumentSnapshot written with ID: ${documentReference.id}") }
