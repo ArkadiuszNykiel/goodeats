@@ -44,8 +44,8 @@ class HomeActivity : AppCompatActivity() {
 
         auth = Firebase.auth
         val currentUser = auth.currentUser
-        val addRecipeButton: Button = findViewById(R.id.addRecipeButton)
-        val profileButton: Button = findViewById(R.id.profileButton)
+        val addRecipeButton: Button = findViewById(R.id.addrecipeButton)
+        val profileButton: Button = findViewById(R.id.signoutButton)
         loadingdialog = createLoadingDialog(this)
 
         val recipeRecyclerView: RecyclerView = findViewById(R.id.recipeRecyclerView)
@@ -85,11 +85,11 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-        profileButton.setOnClickListener{
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+//        profileButton.setOnClickListener{
+//            val intent = Intent(this, ProfileActivity::class.java)
+//            startActivity(intent)
+//            finish()
+//        }
 
 
 
