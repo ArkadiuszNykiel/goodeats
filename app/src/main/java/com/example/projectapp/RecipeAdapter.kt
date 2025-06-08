@@ -37,6 +37,8 @@ class RecipeAdapter(var recipes: MutableList<Recipe>) : RecyclerView.Adapter<Rec
         holder.itemView.setOnClickListener{
             val intent = Intent(holder.itemView.context, SingleRecipeActivity::class.java)
             intent.putExtra("recipeId", recipes[position].id)
+            intent.putExtra("recipeName", recipes[position].name)
+            intent.putExtra("recipePicture", recipes[position].picture)
             holder.itemView.context.startActivity(intent)
 
         }

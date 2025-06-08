@@ -5,7 +5,6 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract.Profile
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
@@ -44,10 +43,7 @@ class HomeActivity : AppCompatActivity() {
 
         auth = Firebase.auth
         val currentUser = auth.currentUser
-        val addRecipeButton: Button = findViewById(R.id.addrecipeButton)
-        val profileButton: Button = findViewById(R.id.signoutButton)
         loadingdialog = createLoadingDialog(this)
-
         val recipeRecyclerView: RecyclerView = findViewById(R.id.recipeRecyclerView)
         recipeRecyclerView.adapter = recipesAdapter
         recipeRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -80,11 +76,6 @@ class HomeActivity : AppCompatActivity() {
 
 
 
-        addRecipeButton.setOnClickListener {
-            val intent = Intent(this, AddRecipeActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
 //        profileButton.setOnClickListener{
 //            val intent = Intent(this, ProfileActivity::class.java)
 //            startActivity(intent)

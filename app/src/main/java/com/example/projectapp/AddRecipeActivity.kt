@@ -2,7 +2,6 @@ package com.example.projectapp
 
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,7 +10,6 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ListView
 import androidx.activity.enableEdgeToEdge
@@ -59,7 +57,7 @@ class AddRecipeActivity : AppCompatActivity() {
         val ingredientEdit: EditText = findViewById(R.id.IngredientEditText)
         val listView: ListView = findViewById(R.id.listView)
         val recipeEdit: EditText = findViewById(R.id.recipeEditText)
-        val addButton: Button = findViewById(R.id.button2)
+        val addButton: Button = findViewById(R.id.addButton)
         val addIngredientButton: Button = findViewById(R.id.addIngredientButton)
         val db = Firebase.firestore
         imageView = findViewById(R.id.recipeImageView)
@@ -102,7 +100,8 @@ class AddRecipeActivity : AppCompatActivity() {
                                 "image" to imageURL,
                                 "ingredients" to ingredientslist,
                                 "instructions" to recipeEdit.text.toString(),
-                                "userid" to currentUser?.uid
+                                "userid" to currentUser?.uid,
+//                                "likes" to 0
 
                             )
                             db.collection("recipes")
