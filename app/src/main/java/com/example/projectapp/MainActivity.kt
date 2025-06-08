@@ -25,7 +25,6 @@ import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 
 
-import org.w3c.dom.Text
 import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
@@ -56,7 +55,8 @@ class MainActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         val db = Firebase.firestore
 
-        val emailEdit: EditText = findViewById(R.id.registerName)
+        val emailEdit: EditText = findViewById(R.id.registerMail)
+        val userEditText : EditText = findViewById(R.id.registerName)
         val passwordEdit: EditText = findViewById(R.id.registerPass)
         val registerButton: Button = findViewById(R.id.registerButton)
         val movetoLogin: TextView = findViewById(R.id.loginTextView)
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
 
         registerButton.setOnClickListener {
-            if(emailEdit.text.isEmpty() || passwordEdit.text.isEmpty()){
+            if(emailEdit.text.isEmpty() || passwordEdit.text.isEmpty() || userEditText.text.isEmpty()){
                 Toast.makeText(
                     baseContext,
                     "Fields cannot be empty",
@@ -110,7 +110,8 @@ class MainActivity : AppCompatActivity() {
 
 
                         val newUser = hashMapOf(
-                            "name" to user.email,
+                            "mail" to user.email,
+                            "name" to userEditText.text.toString(),
                             "avatar" to imageURL
                         )
 
@@ -153,20 +154,20 @@ class MainActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         if (currentUser == null) {
             Log.d("Main", "Nie zalogowany")
-            Toast.makeText(
-                baseContext,
-                "Niezalogowany",
-
-                Toast.LENGTH_SHORT,
-            ).show()
+//            Toast.makeText(
+//                baseContext,
+//                "Niezalogowany",
+//
+//                Toast.LENGTH_SHORT,
+//            ).show()
         }
         else {
             Log.d("Main", "Zalogowany")
-            Toast.makeText(
-                baseContext,
-                "Zalogowany",
-                Toast.LENGTH_SHORT,
-            ).show()
+//            Toast.makeText(
+//                baseContext,
+//                "Zalogowany",
+//                Toast.LENGTH_SHORT,
+//            ).show()
             val intent = Intent(baseContext, HomeActivity::class.java)
             startActivity(intent)
         }

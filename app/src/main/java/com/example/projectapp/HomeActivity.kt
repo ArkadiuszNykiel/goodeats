@@ -71,16 +71,19 @@ class HomeActivity : AppCompatActivity() {
         }
         fetchRecipes("")
 
-
-
-
-
-
-//        profileButton.setOnClickListener{
-//            val intent = Intent(this, ProfileActivity::class.java)
+//        signOutButton.setOnClickListener {
+//            auth.signOut()
+//            val intent = Intent(this, MainActivity::class.java)
 //            startActivity(intent)
 //            finish()
 //        }
+
+
+
+
+
+
+
 
 
 

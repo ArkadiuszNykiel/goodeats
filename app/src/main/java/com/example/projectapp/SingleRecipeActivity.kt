@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
@@ -11,6 +12,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.authenticationguide.CommentAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -67,12 +71,6 @@ class SingleRecipeActivity : AppCompatActivity() {
         }
 
 
-
-
-
-
-
-
         val singleTitleText: TextView = findViewById(R.id.singleTitleText)
         val recipeThumbnail: ImageView = findViewById(R.id.recipeThumbnail)
         val ingredientsListView = findViewById<ListView>(R.id.ingredientsListView)
@@ -82,6 +80,11 @@ class SingleRecipeActivity : AppCompatActivity() {
         val prepTextView: TextView = findViewById(R.id.prepTextView)
         val likeButton: ImageView = findViewById(R.id.likeButton)
         val likeCountTextView: TextView = findViewById(R.id.likeCountTextView)
+        val comments = mutableListOf<Comment>()
+        val addCommentButton: androidx.appcompat.widget.AppCompatButton =
+            findViewById(R.id.addCommentButton)
+        val commentEdit: EditText = findViewById(R.id.commentEdit)
+
         singleTitleText.text = recipeName
         prepTextView.text = recipeName
         Picasso.get().load(recipePicture).into(recipeThumbnail)
@@ -89,6 +92,10 @@ class SingleRecipeActivity : AppCompatActivity() {
         if (recipeId != null) {
             loadLikeState(recipeId, likeButton, likeCountTextView)
         }
+        val adapter = CommentAdapter(comments)
+        val commentRecyclerView = findViewById<RecyclerView>(R.id.commentRecyclerView)
+        commentRecyclerView.adapter = adapter
+        commentRecyclerView.layoutManager = LinearLayoutManager(this)
 
 
         val docRef = db.collection("recipes").document(recipeId.toString())
@@ -98,7 +105,8 @@ class SingleRecipeActivity : AppCompatActivity() {
                     val ingredients = document["ingredients"] as? List<String>
                     if (ingredients != null) {
                         // Set up the ListView with the ingredients
-                        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, ingredients)
+                        val adapter =
+                            ArrayAdapter(this, android.R.layout.simple_list_item_1, ingredients)
                         ingredientsListView.adapter = adapter
                     } else {
                         Log.d(TAG, "No ingredients found.")
@@ -169,22 +177,70 @@ class SingleRecipeActivity : AppCompatActivity() {
                 Log.w("SingleRecipeActivity", "Transaction failed", e)
             }
         }
+        db.collection("comments").whereEqualTo("recipeId", recipeId)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    Log.d("SinglePost", "${document.id} => ${document.data}")
+                    comments.add(
+                        Comment(
+                            document.id,
+                            document.data["uid"].toString(),
+                            document.data["postId"].toString(),
+                            document.data["text"].toString(),
+                            document.data["timestamp"] as com.google.firebase.Timestamp
+                        )
+                    )
+                }
+                adapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                Log.d("SinglePost", "Error getting documents: ", exception)
+            }
+
+        addCommentButton.setOnClickListener {
+            val comment = hashMapOf(
+                "text" to commentEdit.text.toString(),
+                "uid" to auth.currentUser!!.uid,
+                "recipeId" to recipeId,
+                "timestamp" to com.google.firebase.Timestamp.now()
+            )
+
+            db.collection("comments")
+                .add(comment)
+                .addOnSuccessListener { documentReference ->
+                    Log.d("Comment", "DocumentSnapshot written with ID: ${documentReference.id}")
+                    commentEdit.text.clear()
+                    commentEdit.onEditorAction(0)
+                    db.collection("comments").whereEqualTo("postId", recipeId)
+                        .get()
+                        .addOnSuccessListener { result ->
+                            comments.clear()
+                            for (document in result) {
+                                Log.d("SinglePost", "${document.id} => ${document.data}")
+                                comments.add(
+                                    Comment(
+                                        document.id,
+                                        document.data["uid"].toString(),
+                                        document.data["recipeId"].toString(),
+                                        document.data["text"].toString(),
+                                        document.data["timestamp"] as com.google.firebase.Timestamp
+                                    )
+                                )
+                            }
+                            adapter.notifyDataSetChanged()
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.d("SinglePost", "Error getting documents: ", exception)
+                        }
+                }
+                .addOnFailureListener { e ->
+                    Log.w("Comment", "Error adding document", e)
+                }
 
 
-
-
-
-
+        }
     }
-
-
-
-
-
-
-
-
-
 
 
     }

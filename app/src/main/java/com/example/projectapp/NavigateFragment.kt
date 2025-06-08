@@ -1,5 +1,7 @@
 package com.example.projectapp
 
+
+
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -22,9 +24,9 @@ class NavigateFragment : Fragment() {
         val profileImageButton = view.findViewById<ImageButton>(R.id.profileImageButton)
         val addImageButton = view.findViewById<ImageButton>(R.id.addImageButton)
 
-//        profileImageButton.setOnClickListener{
-//            startActivity(Intent(requireContext(), ProfileActivity::class.java))))
-//        }
+        profileImageButton.setOnClickListener{
+            startActivity(Intent(requireContext(), UserActivity::class.java))
+        }
         addImageButton.setOnClickListener{
             startActivity(Intent(requireContext(), AddRecipeActivity::class.java))
         }

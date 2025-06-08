@@ -66,26 +66,6 @@ class ProfileActivity : AppCompatActivity() {
         recipeRecyclerView.layoutManager = LinearLayoutManager(this)
 
 
-        fun fetchRecipes(name: String) {
-            db.collection("recipes").whereGreaterThanOrEqualTo("name", name)
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        Log.d(TAG, "${document.id} => ${document.data}")
-                        recipes.add(Recipe( document.id,
-
-                            document.data["name"].toString(),
-                            document.data["image"].toString()
-                        ))
-
-                    }
-                    recipesAdapter.notifyDataSetChanged()
-                }
-                .addOnFailureListener { exception ->
-                    Log.d(TAG, "Error getting documents: ", exception)
-                }
-        }
-        fetchRecipes("")
 
         signOutButton.setOnClickListener {
             auth.signOut()
