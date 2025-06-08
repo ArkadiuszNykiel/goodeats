@@ -25,8 +25,6 @@ import com.squareup.picasso.Picasso
 
 class SingleRecipeActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
-    private val recipes = mutableListOf<Recipe>()
-    val recipesAdapter = RecipeAdapter(recipes)
     val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -242,7 +240,7 @@ class SingleRecipeActivity : AppCompatActivity() {
                     Log.d("Comment", "DocumentSnapshot written with ID: ${documentReference.id}")
                     commentEdit.text.clear()
                     commentEdit.onEditorAction(0)
-                    db.collection("comments").whereEqualTo("postId", recipeId)
+                    db.collection("comments").whereEqualTo("recipeId", recipeId)
                         .get()
                         .addOnSuccessListener { result ->
                             comments.clear()

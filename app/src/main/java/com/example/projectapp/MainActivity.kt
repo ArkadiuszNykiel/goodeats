@@ -29,21 +29,10 @@ import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
-    private var imageURL: String = ""
-    private lateinit var imageUri2: Uri
-    private var imagePicked = false
     private lateinit var loadingdialog: Dialog
     private lateinit var auth: FirebaseAuth
     private lateinit var storage: FirebaseStorage
     private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if(it.resultCode == Activity.RESULT_OK)
-        {
-            val data: Intent? = it.data
-            val imageUri = data?.data
-            imageUri2 = imageUri!!
-            imageView.setImageURI(imageUri)
-            imagePicked = true
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +41,6 @@ class MainActivity : AppCompatActivity() {
         auth = Firebase.auth
         storage = Firebase.storage
 
-        val currentUser = auth.currentUser
         val db = Firebase.firestore
 
         val emailEdit: EditText = findViewById(R.id.registerMail)
@@ -63,13 +51,6 @@ class MainActivity : AppCompatActivity() {
         imageView = findViewById(R.id.imageView)
         loadingdialog = createLoadingDialog(this)
 
-        Picasso.get().load("https://i.imgur.com/DvpvklR.png").into(imageView)
-
-
-        imageView.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            getContent.launch(intent)
-        }
 
 
 
@@ -94,25 +75,12 @@ class MainActivity : AppCompatActivity() {
                             "Hello:"+user!!.email.toString(),
                             Toast.LENGTH_SHORT,
                         ).show()
-                        if(!imagePicked){
-                            imageURL = "https://i.imgur.com/DvpvklR.png"
-                        }
-                        else{
-                            val storageReference = FirebaseStorage.getInstance().reference
-                            val imageRef = storageReference.child("images/" + UUID.randomUUID().toString())
 
-                            imageRef.putFile(imageUri2)
-                                .addOnSuccessListener {
-                                    imageRef.downloadUrl.addOnSuccessListener { uri ->
-                                    imageURL = uri.toString()}
-                                }
-                        }
 
 
                         val newUser = hashMapOf(
                             "mail" to user.email,
                             "name" to userEditText.text.toString(),
-                            "avatar" to imageURL
                         )
 
                         db.collection("users").document(user.uid)
@@ -150,24 +118,14 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
-        if (currentUser == null) {
-            Log.d("Main", "Nie zalogowany")
-//            Toast.makeText(
-//                baseContext,
-//                "Niezalogowany",
-//
-//                Toast.LENGTH_SHORT,
-//            ).show()
-        }
-        else {
+        if (currentUser != null) {
             Log.d("Main", "Zalogowany")
-//            Toast.makeText(
-//                baseContext,
-//                "Zalogowany",
-//                Toast.LENGTH_SHORT,
-//            ).show()
+            Toast.makeText(
+                baseContext,
+                "Zalogowany",
+                Toast.LENGTH_SHORT,
+            ).show()
             val intent = Intent(baseContext, HomeActivity::class.java)
             startActivity(intent)
         }

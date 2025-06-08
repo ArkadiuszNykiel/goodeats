@@ -42,7 +42,6 @@ class HomeActivity : AppCompatActivity() {
 
 
         auth = Firebase.auth
-        val currentUser = auth.currentUser
         loadingdialog = createLoadingDialog(this)
         val recipeRecyclerView: RecyclerView = findViewById(R.id.recipeRecyclerView)
         recipeRecyclerView.adapter = recipesAdapter
